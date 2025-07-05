@@ -1,4 +1,4 @@
-﻿using DoctorsNamespace;
+using DoctorsNamespace;
 
 namespace ApplicationNamespace
 {
