@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ReservNamespace;
 
@@ -10,15 +10,18 @@ namespace DoctorsNamespace
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Experience { get; set; }
+        public string Description { get; set; }
         public List<Reserv> Reserved { get; set; }
 
 
-        public Doctor(string name, string surname, int experience)
+        public Doctor(string name, string surname, int experience, string description = "")
         {
             Name = name;
             Surname = surname;
             Experience = experience;
+            Description = description;
             Reserved = new List<Reserv>
+           
     {
         new Reserv("09:00-11:00"),
         new Reserv("12:00-14:00"),
@@ -26,4 +29,4 @@ namespace DoctorsNamespace
     };
         }
     }
-}
+} 
