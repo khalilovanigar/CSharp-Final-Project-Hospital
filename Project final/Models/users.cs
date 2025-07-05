@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection.Metadata;
 namespace UsersNamespace;
 
@@ -24,7 +24,7 @@ public class User
             }
         }
     }
-
+    
     public string? PhoneNumber { get; set; }
 
     public User(string name, string surname, string email, string phonenumber)
@@ -34,5 +34,5 @@ public class User
         Email = email;
         PhoneNumber = phonenumber;
     }
-
+    
 }
