@@ -18,18 +18,16 @@ namespace AdminNamespace
             Password = password;
         }
 
-        public bool Login(string username, string password)
+        public void Login(string username, string password)
         {
-            if (username == "admin" && password == "admin123")
+            if (username != "admin" || password != "admin123")
             {
-                return true;
+                throw new UnauthorizedAccessException("Invalid username or password!");
             }
-            else
-            {
-                System.Console.WriteLine("Wrong username or password.");
-                return false;
-            }
+
         }
+
+
 
         public void AddDoctorApplication(Doctor doctor)
         {
@@ -43,7 +41,9 @@ namespace AdminNamespace
             if (app != null)
             {
                 app.Status = ApplicationStatus.Accepted;
-                System.Console.WriteLine($"{name} {surname} accepted.");
+                System.Console.WriteLine();
+                System.Console.WriteLine($"Dr.{name} {surname} accepted.");
+                System.Console.WriteLine();
             }
             else
             {
@@ -57,7 +57,9 @@ namespace AdminNamespace
             if (app != null)
             {
                 app.Status = ApplicationStatus.Rejected;
-                System.Console.WriteLine($"{name} {surname} rejected.");
+                System.Console.WriteLine();
+                System.Console.WriteLine($"Dr.{name} {surname} rejected.");
+                System.Console.WriteLine();
             }
             else
             {
@@ -67,13 +69,17 @@ namespace AdminNamespace
 
         public void ShowPendingApplications()
         {
-            System.Console.WriteLine("Pending Doctor Applications:");
+            System.Console.WriteLine("             -----Pending Doctors List-----");
+            System.Console.WriteLine();
             foreach (var app in PendingApplications)
             {
                 if (app.Status == ApplicationStatus.Pending)
                 {
-                    System.Console.WriteLine($"- {app.Doctor.Name} {app.Doctor.Surname}, Experience: {app.Doctor.Experience} years");
-                    System.Console.WriteLine($"  Description: {app.Doctor.Description}");
+                    System.Console.WriteLine($"- Fullname:     {app.Doctor.Name} {app.Doctor.Surname}");
+                    System.Console.WriteLine($"- Department:   {app.Doctor.Department}");
+                    System.Console.WriteLine($"- Experience:   {app.Doctor.Experience} years");
+                    System.Console.WriteLine($"- Description:  {app.Doctor.Description}");
+                    System.Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------");
                 }
             }
         }
