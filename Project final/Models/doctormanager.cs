@@ -19,14 +19,14 @@ using System;
             Description = description;
         }
 
-        public void ShowCV()
-        {
-            Console.WriteLine("Doctor CV:");
-            Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"Surname: {Surname}");
-            Console.WriteLine($"Experience year: {ExperienceYears} il");
-            Console.WriteLine($"Departament: {Department}");
-            Console.WriteLine($"About: {Description}");
+    public void ShowCV()
+    {
+        System.Console.WriteLine("Doctor's CV");
+        System.Console.WriteLine($"Name: {Name}");
+        System.Console.WriteLine($"Surname: {Surname}");
+        System.Console.WriteLine($"Experience year: {ExperienceYears} years");
+        System.Console.WriteLine($"Departament: {Department}");
+        System.Console.WriteLine($"About: {Description}");
         }
     }
 
