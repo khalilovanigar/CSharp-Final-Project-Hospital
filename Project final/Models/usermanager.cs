@@ -14,6 +14,7 @@ namespace MenuHelperNamespace
             {
                 Console.Clear();
                 Console.WriteLine($"--- {title} ---");
+                 System.Console.WriteLine();
                 for (int i = 0; i < options.Count; i++)
                 {
                     if (i == selectedIndex)
@@ -42,3 +43,4 @@ namespace MenuHelperNamespace
         }
     }
 }
+
