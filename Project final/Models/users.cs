@@ -49,22 +49,19 @@ public class User
         LastChoice = -1;
     }
 
-public static void SaveToJson(string filePath, List<User> users)
-{
-    try
-    {
-        string jsonData = JsonConvert.SerializeObject(users, Formatting.Indented);
-        
-        Console.WriteLine("Saving user data to JSON...");
-        Console.WriteLine(jsonData);
 
-        File.WriteAllText(filePath, jsonData); 
-    }
-    catch (Exception ex)
+    public static void SaveToJson(string filePath, List<User> users)
     {
-        Console.WriteLine("Error saving user data: " + ex.Message);
+        try
+        {
+            string jsonData = JsonConvert.SerializeObject(users, Formatting.Indented);
+            File.WriteAllText(filePath, jsonData);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error saving user data: " + ex.Message);
+        }
     }
-}
 
 public static List<User> LoadFromJson(string filePath)
 {
@@ -74,29 +71,46 @@ public static List<User> LoadFromJson(string filePath)
         {
             string jsonData = File.ReadAllText(filePath);
 
-            Console.WriteLine("Loading user data from JSON...");
-            Console.WriteLine(jsonData); 
+            if (string.IsNullOrWhiteSpace(jsonData))  
+            {
+                return new List<User>();  
+            }
 
-            return JsonConvert.DeserializeObject<List<User>>(jsonData);
+            Console.WriteLine("Loading user data from JSON...");
+            Console.WriteLine(jsonData);
+
+            return JsonConvert.DeserializeObject<List<User>>(jsonData) ?? new List<User>();
         }
         else
         {
- 
             return new List<User>();
         }
     }
     catch (Exception ex)
     {
         Console.WriteLine("Error loading user data: " + ex.Message);
-        return new List<User>(); 
+        return new List<User>();
     }
 }
 
-    public void AddAppointment(Doctor doctor, string time)
+
+
+
+public void AddAppointment(Doctor doctor, string time)
+{
+    if (Appointments.Any(a => a.Time == time))
+    {
+        Console.WriteLine("This appointment time is already reserved.");
+    }
+    else
     {
         Appointments.Add(new Appointment(doctor, time));
     }
 }
+
+        
+}
+
 
     public class Appointment
     {
