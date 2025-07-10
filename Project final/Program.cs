@@ -7,6 +7,7 @@ using AdminNamespace;
 using ApplicationNamespace;
 using DoctorManagerNamespace;
 using MenuHelperNamespace;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,7 +47,8 @@ var departments = new List<Department>
 };
 
 List<User> users = new List<User>();
-var admin = new Admin("admin", "admin123");
+    Admin admin = new Admin("admin", "admin123");
+    admin.LoadApplicationsFromFile();
 
 var doctor1 = new Doctor("Gulnar", "Huseynova", 10, "Pediatriya") { Description = "Pediatrician with 10 years of experience. Focused on children's health." };
 var doctor2 = new Doctor("Muxtar", "Kerimov", 5, "Travmotologiya") { Description = "Orthopedic specialist with 5 years of experience, skilled in trauma and fracture care." };
@@ -66,15 +68,17 @@ var doctor5 = new Doctor("Ayxan", "Zamanov", 2, "Travmotologiya") { Description 
         admin.AddDoctorApplication(doctor3);
         admin.AddDoctorApplication(doctor4);
         admin.AddDoctorApplication(doctor5);
-        // admin.AddDoctorApplication(doctor6);
-        // admin.AddDoctorApplication(doctor7);
-        // admin.AddDoctorApplication(doctor8);
-        // admin.AddDoctorApplication(doctor9);
-        // admin.AddDoctorApplication(doctor10);
+// admin.AddDoctorApplication(doctor6);
+// admin.AddDoctorApplication(doctor7);
+// admin.AddDoctorApplication(doctor8);
+// admin.AddDoctorApplication(doctor9);
+// admin.AddDoctorApplication(doctor10);
+
+
 
 while (true)
 {
-var mainMenuOptions = new List<string>
+    var mainMenuOptions = new List<string>
 {
     "1. Admin Login",
     "2. User Sign Up",
@@ -84,7 +88,7 @@ var mainMenuOptions = new List<string>
     "6. Exit from system"
 };
 
-int choice = MenuHelper.SelectFromMenu(mainMenuOptions, "Main Menu") +1 ;
+    int choice = MenuHelper.SelectFromMenu(mainMenuOptions, "Main Menu") + 1;
 
     if (choice == 1)
     {
@@ -226,7 +230,7 @@ int choice = MenuHelper.SelectFromMenu(mainMenuOptions, "Main Menu") +1 ;
 
                 Console.Clear();
                 System.Console.WriteLine("              ----- Accepted Doctors List -----");
-                System.Console.WriteLine();   System.Console.WriteLine();
+                System.Console.WriteLine(); System.Console.WriteLine();
 
                 if (acceptedDoctors.Count == 0)
                 {
@@ -279,20 +283,20 @@ int choice = MenuHelper.SelectFromMenu(mainMenuOptions, "Main Menu") +1 ;
                 Console.ReadKey();
             }
 
-else if (adminChoice == 5)
-{
-    Console.Clear();
-    System.Console.WriteLine("               ----- All Reservations -----");
-    System.Console.WriteLine();
-
-    bool anyReservation = false;
-
-    foreach (var dept in departments)
-    {
-        foreach (var doc in dept.Doctors)
-        {
-            foreach (var res in doc.Reserved)
+            else if (adminChoice == 5)
             {
+                Console.Clear();
+                System.Console.WriteLine("               ----- All Reservations -----");
+                System.Console.WriteLine();
+
+                bool anyReservation = false;
+
+                foreach (var dept in departments)
+                {
+                    foreach (var doc in dept.Doctors)
+                    {
+                        foreach (var res in doc.Reserved)
+                        {
                             if (res.IsReserved && res.ReservedBy != null)
                             {
                                 anyReservation = true;
@@ -301,19 +305,19 @@ else if (adminChoice == 5)
                                 System.Console.WriteLine($"Time:         {res.Time}");
                                 System.Console.WriteLine($"Reserved by:  {res.ReservedBy.Name} {res.ReservedBy.Surname}");
                                 System.Console.WriteLine("-----------------------------------------------------------");
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
 
-    if (!anyReservation)
-    {
-        System.Console.WriteLine("No reservations found.");
-    }
-    System.Console.WriteLine();
-    System.Console.WriteLine("Press any key to return...");
-    Console.ReadKey();
-}
+                if (!anyReservation)
+                {
+                    System.Console.WriteLine("No reservations found.");
+                }
+                System.Console.WriteLine();
+                System.Console.WriteLine("Press any key to return...");
+                Console.ReadKey();
+            }
 
 
             else if (adminChoice == 6)
@@ -322,311 +326,324 @@ else if (adminChoice == 5)
                 break;
             }
         }
-}
+    }
 
 
 
-else if (choice == 2)
-{
-    Console.Clear();
-    System.Console.WriteLine("          ----- User Sign Up -----");
-    System.Console.WriteLine();
-
-    System.Console.Write("Enter your Name: ");
-    string name = Console.ReadLine()!;
-
-    System.Console.Write("Enter your Surname: ");
-    string surname = Console.ReadLine()!;
-
-    string email = "";
-    bool isValidEmail = false;
-
-    while (!isValidEmail)
+    else if (choice == 2)
     {
-        System.Console.Write("Enter your Mail: ");
-        email = Console.ReadLine()!;
+        Console.Clear();
+        System.Console.WriteLine("          ----- User Sign Up -----");
+        System.Console.WriteLine();
+
+        System.Console.Write("Enter your Name: ");
+        string name = Console.ReadLine()!;
+
+        System.Console.Write("Enter your Surname: ");
+        string surname = Console.ReadLine()!;
+
+        string email = "";
+        bool isValidEmail = false;
+
+        while (!isValidEmail)
+        {
+            System.Console.Write("Enter your Mail: ");
+            email = Console.ReadLine()!;
+
+            try
+            {
+
+                User tempUser = new User(name, surname, email, " ", " ");
+                isValidEmail = true;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine($"Error: {ex.Message}");
+                Console.ResetColor();
+                System.Console.WriteLine("Please try again.");
+                Console.ReadKey();
+            }
+        }
+
+        System.Console.Write("Enter your Phone Number: ");
+        string phoneNumber = Console.ReadLine()!;
+
+        string password = "";
+        bool isValidPassword = false;
+
+        while (!isValidPassword)
+        {
+            Console.Write("Create a Password (at least 8 characters): ");
+            password = Console.ReadLine()!;
+
+            if (password.Length < 8)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Password must be at least 8 characters long.");
+                Console.ResetColor();
+            }
+            else
+            {
+                isValidPassword = true;
+            }
+        }
 
         try
         {
-            
-            User tempUser = new User(name, surname, email, " "," "); 
-            isValidEmail = true;
+            User newUser = new User(name, surname, email, phoneNumber, password);
+            string filePath = "user_data.json";
+
+            List<User> users_new = User.LoadFromJson(filePath);
+
+            users_new.Add(newUser);
+
+            User.SaveToJson(filePath, users_new);
+
+            Console.WriteLine("Your registration was successful. Your data has been saved to user_data.json");
+
+            Console.WriteLine("\nUser details loaded from file:");
+            foreach (var user in users_new)
+            {
+                Console.WriteLine($"Name: {user.Name}");
+                Console.WriteLine($"Surname: {user.Surname}");
+                Console.WriteLine($"Email: {user.Email}");
+                Console.WriteLine($"Phone Number: {user.PhoneNumber}");
+                Console.WriteLine($"Password: {user.Password}");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Press any key to return to the main menu...");
+            Console.ReadKey();
+
+            // Department secimi
+
+            System.Console.WriteLine("Choose a department: ");
+            var departmentNames = departments.Select(d => d.DepartmentName!).ToList();
+            int selectedDeptIndex = MenuHelper.SelectFromMenu(departmentNames, "Choose a Department");
+
+            Department selectedDepartment = departments[selectedDeptIndex];
+            System.Console.WriteLine($"You chose {selectedDepartment.DepartmentName}");
+
+            // Doctor secimi
+
+            var doctorNames = selectedDepartment.Doctors
+                    .Select(doc => $"{doc.Name} {doc.Surname} ({doc.Experience} years)")
+                    .ToList();
+
+            int selectedDoctorIndex = MenuHelper.SelectFromMenu(doctorNames, "Choose a Doctor");
+
+            var selectedDoctor = selectedDepartment.Doctors[selectedDoctorIndex];
+            System.Console.WriteLine($"You chose Dr. {selectedDoctor.Name} {selectedDoctor.Surname} with {selectedDoctor.Experience} years of experience.");
+
+            // Saat secimi
+
+            var timeOptions = selectedDoctor.Reserved
+                .Select(r => $"{r.Time} {(r.IsReserved ? "(Reserved)" : "(Available)")}")
+                .ToList();
+
+            while (true)
+            {
+                int selectedTimeIndex = MenuHelper.SelectFromMenu(timeOptions, "Choose a time slot");
+
+                var chosenHour = selectedDoctor.Reserved[selectedTimeIndex];
+
+                if (chosenHour.IsReserved)
+                {
+                    System.Console.WriteLine("Sorry, this time slot is already reserved. Please choose another time.");
+                    System.Console.WriteLine("Press any key to try again...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    chosenHour.IsReserved = true;
+                    chosenHour.ReservedBy = newUser;
+                    newUser.AddAppointment(selectedDoctor, chosenHour.Time);
+                    System.Console.WriteLine($"Thanks {name} {surname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
+
+                    string doctorsFilePath = "doctors.json";
+                    List<Doctor> doctors = Doctor.LoadDoctorsFromJson(doctorsFilePath);
+                    Doctor.SaveDoctorsToJson(doctorsFilePath, doctors);
+                    Console.ReadKey();
+                    break;
+                    
+                }
+            }
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine($"Error: {ex.Message}");
-            Console.ResetColor();
-            System.Console.WriteLine("Please try again.");
+            System.Console.WriteLine($"Error during registration: {ex.Message}");
+            System.Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
     }
 
-    System.Console.Write("Enter your Phone Number: ");
-    string phoneNumber = Console.ReadLine()!;
 
-    string password = "";
-    bool isValidPassword = false;
 
-    while (!isValidPassword)
+    else if (choice == 3)
     {
-        Console.Write("Create a Password (at least 8 characters): ");
-        password = Console.ReadLine()!;
+        Console.Clear();
+        System.Console.WriteLine("        ----- User LogIn -----");
+        System.Console.WriteLine();
 
-        if (password.Length < 8)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Password must be at least 8 characters long.");
-            Console.ResetColor();
-        }
-        else
-        {
-            isValidPassword = true;
-        }
-    }
-
-    try
-    {
-        User newUser = new User(name, surname, email, phoneNumber, password);
         string filePath = "user_data.json";
-
         List<User> users_new = User.LoadFromJson(filePath);
 
-        users_new.Add(newUser);
+        System.Console.Write("Enter your Name: ");
+        string name = Console.ReadLine()!;
 
-        User.SaveToJson(filePath, users_new); 
+        System.Console.Write("Enter your Surname: ");
+        string usersurname = Console.ReadLine()!;
 
-        Console.WriteLine("Your registration was successful. Your data has been saved to user_data.json");
+        System.Console.Write("Enter your Email: ");
+        string loginEmail = Console.ReadLine()!;
 
-        Console.WriteLine("\nUser details loaded from file:");
+        System.Console.Write("Enter your Password: ");
+        string password = Console.ReadLine()!;
+
+        bool found = false;
         foreach (var user in users_new)
         {
-            Console.WriteLine($"Name: {user.Name}");
-            Console.WriteLine($"Surname: {user.Surname}");
-            Console.WriteLine($"Email: {user.Email}");
-            Console.WriteLine($"Phone Number: {user.PhoneNumber}");
-            Console.WriteLine($"Password: {user.Password}");
-            Console.WriteLine();
-        }
-
-        Console.WriteLine("Press any key to return to the main menu...");
-        Console.ReadKey();
-
-            // Department secimi
-        
-        System.Console.WriteLine("Choose a department: ");
-        var departmentNames = departments.Select(d => d.DepartmentName!).ToList();
-        int selectedDeptIndex = MenuHelper.SelectFromMenu(departmentNames, "Choose a Department");
-
-        Department selectedDepartment = departments[selectedDeptIndex];
-        System.Console.WriteLine($"You chose {selectedDepartment.DepartmentName}");
-
-            // Doctor secimi
-        
-        var doctorNames = selectedDepartment.Doctors
-                .Select(doc => $"{doc.Name} {doc.Surname} ({doc.Experience} years)")
-                .ToList();
-
-        int selectedDoctorIndex = MenuHelper.SelectFromMenu(doctorNames, "Choose a Doctor");
-
-        var selectedDoctor = selectedDepartment.Doctors[selectedDoctorIndex];
-        System.Console.WriteLine($"You chose Dr. {selectedDoctor.Name} {selectedDoctor.Surname} with {selectedDoctor.Experience} years of experience.");
-
-            // Saat secimi
-    
-        var timeOptions = selectedDoctor.Reserved
-            .Select(r => $"{r.Time} {(r.IsReserved ? "(Reserved)" : "(Available)")}")
-            .ToList();
-
-        while (true)
-        {
-            int selectedTimeIndex = MenuHelper.SelectFromMenu(timeOptions, "Choose a time slot");
-
-            var chosenHour = selectedDoctor.Reserved[selectedTimeIndex];
-
-            if (chosenHour.IsReserved)
+            if (user.Name == name && user.Surname == usersurname && user.Email == loginEmail)
             {
-                System.Console.WriteLine("Sorry, this time slot is already reserved. Please choose another time.");
-                System.Console.WriteLine("Press any key to try again...");
-                Console.ReadKey();
-            }
-            else
-            {
-                chosenHour.IsReserved = true;
-                chosenHour.ReservedBy = newUser;
-                newUser.AddAppointment(selectedDoctor, chosenHour.Time);
-                System.Console.WriteLine($"Thanks {name} {surname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
-                Console.ReadKey();
-                break;
-            }
-        }
-    }
-    catch (Exception ex)
-    {
-        System.Console.WriteLine($"Error during registration: {ex.Message}");
-        System.Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
-    }
-}
-
-
-
-else if (choice == 3)
-{
-    Console.Clear();
-    System.Console.WriteLine("        ----- User LogIn -----");
-    System.Console.WriteLine();
-
-    string filePath = "user_data.json";
-    List<User> users_new = User.LoadFromJson(filePath); 
-
-    System.Console.Write("Enter your Name: ");
-    string name = Console.ReadLine()!;
-
-    System.Console.Write("Enter your Surname: ");
-    string usersurname = Console.ReadLine()!;
-
-    System.Console.Write("Enter your Email: ");
-    string loginEmail = Console.ReadLine()!;
-
-    System.Console.Write("Enter your Password: ");
-    string password = Console.ReadLine()!;
-
-    bool found = false;
-    foreach (var user in users_new)
-    {
-        if (user.Name == name && user.Surname == usersurname && user.Email == loginEmail)
-        {
-            if (user.Password == password)
-            {
-                System.Console.WriteLine($"Welcome {user.Name} {user.Surname}!");
-                found = true;
-                bool loggedIn = true;
-
-                int lastChoice = user.LastChoice; 
-
-                while (loggedIn)
+                if (user.Password == password)
                 {
-                    string[] userOptions = { "Book an appointment", "Logout" };
-                    int selectedIndex = (lastChoice != -1) ? lastChoice : 0; 
-                    
-                    while (true)
+                    System.Console.WriteLine($"Welcome {user.Name} {user.Surname}!");
+                    found = true;
+                    bool loggedIn = true;
+
+                    int lastChoice = user.LastChoice;
+
+                    while (loggedIn)
                     {
-                        Console.Clear();
-                        System.Console.WriteLine($"Welcome {user.Name} {user.Surname}!");
-                        System.Console.WriteLine();
-
-                        for (int i = 0; i < userOptions.Length; i++)
-                        {
-                            if (i == selectedIndex)
-                            {
-                                Console.BackgroundColor = ConsoleColor.White;
-                                Console.ForegroundColor = ConsoleColor.Black;
-                            }
-                            else
-                            {
-                                Console.ResetColor();
-                            }
-
-                            System.Console.WriteLine(userOptions[i]);
-                        }
-                        Console.ResetColor();
-
-                        var key = Console.ReadKey(true).Key;
-                        if (key == ConsoleKey.UpArrow)
-                        {
-                            selectedIndex = (selectedIndex == 0) ? userOptions.Length - 1 : selectedIndex - 1;
-                        }
-                        else if (key == ConsoleKey.DownArrow)
-                        {
-                            selectedIndex = (selectedIndex == userOptions.Length - 1) ? 0 : selectedIndex + 1;
-                        }
-                        else if (key == ConsoleKey.Enter)
-                        {
-                            break;
-                        }
-                    }
-
-                    user.LastChoice = selectedIndex; 
-                    User.SaveToJson(filePath, users_new);  
-
-                    if (selectedIndex == 0)
-                    {
-                            // Department secimi
-                        
-                        System.Console.WriteLine("Choose a department: ");
-                        var departmentNames = departments.Select(d => d.DepartmentName!).ToList();
-                        int selectedDeptIndex = MenuHelper.SelectFromMenu(departmentNames, "Choose a Department");
-
-                        Department selectedDepartment = departments[selectedDeptIndex];
-                        System.Console.WriteLine($"You chose {selectedDepartment.DepartmentName}");
-
-                            // Doctor secimi
-                        
-                        var doctorNames = selectedDepartment.Doctors
-                            .Select(doc => $"{doc.Name} {doc.Surname} ({doc.Experience} years)")
-                            .ToList();
-
-                        int selectedDoctorIndex = MenuHelper.SelectFromMenu(doctorNames, "Choose a Doctor");
-
-                        var selectedDoctor = selectedDepartment.Doctors[selectedDoctorIndex];
-                        System.Console.WriteLine($"You chose Dr. {selectedDoctor.Name} {selectedDoctor.Surname} with {selectedDoctor.Experience} years of experience.");
-
-                            // Saat secimi
-                        
-                        var timeOptions = selectedDoctor.Reserved
-                            .Select(r => $"{r.Time} {(r.IsReserved ? "(Reserved)" : "(Available)")}")
-                            .ToList();
+                        string[] userOptions = { "Book an appointment", "Logout" };
+                        int selectedIndex = (lastChoice != -1) ? lastChoice : 0;
 
                         while (true)
                         {
-                            int selectedTimeIndex = MenuHelper.SelectFromMenu(timeOptions, "Choose a time slot");
+                            Console.Clear();
+                            System.Console.WriteLine($"Welcome {user.Name} {user.Surname}!");
+                            System.Console.WriteLine();
 
-                            var chosenHour = selectedDoctor.Reserved[selectedTimeIndex];
-
-                            if (chosenHour.IsReserved)
+                            for (int i = 0; i < userOptions.Length; i++)
                             {
-                                System.Console.WriteLine("Sorry, this time slot is already reserved. Please choose another time.");
-                                System.Console.WriteLine("Press any key to try again...");
-                                Console.ReadKey();
+                                if (i == selectedIndex)
+                                {
+                                    Console.BackgroundColor = ConsoleColor.White;
+                                    Console.ForegroundColor = ConsoleColor.Black;
+                                }
+                                else
+                                {
+                                    Console.ResetColor();
+                                }
+
+                                System.Console.WriteLine(userOptions[i]);
                             }
-                            else
+                            Console.ResetColor();
+
+                            var key = Console.ReadKey(true).Key;
+                            if (key == ConsoleKey.UpArrow)
                             {
-                                chosenHour.IsReserved = true;
-                                chosenHour.ReservedBy = user;
-                                user.AddAppointment(selectedDoctor, chosenHour.Time);
-                                System.Console.WriteLine($"Thanks {name} {usersurname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
-                                Console.ReadKey();
+                                selectedIndex = (selectedIndex == 0) ? userOptions.Length - 1 : selectedIndex - 1;
+                            }
+                            else if (key == ConsoleKey.DownArrow)
+                            {
+                                selectedIndex = (selectedIndex == userOptions.Length - 1) ? 0 : selectedIndex + 1;
+                            }
+                            else if (key == ConsoleKey.Enter)
+                            {
                                 break;
                             }
                         }
-                    }
-                    else if (selectedIndex == 1)
-                    {
-                        System.Console.WriteLine("Logging out from user page");
-                        System.Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
-                        loggedIn = false;
+
+                        user.LastChoice = selectedIndex;
+                        User.SaveToJson(filePath, users_new);
+
+                        if (selectedIndex == 0)
+                        {
+                            // Department secimi
+
+                            System.Console.WriteLine("Choose a department: ");
+                            var departmentNames = departments.Select(d => d.DepartmentName!).ToList();
+                            int selectedDeptIndex = MenuHelper.SelectFromMenu(departmentNames, "Choose a Department");
+
+                            Department selectedDepartment = departments[selectedDeptIndex];
+                            System.Console.WriteLine($"You chose {selectedDepartment.DepartmentName}");
+
+                            // Doctor secimi
+
+                            var doctorNames = selectedDepartment.Doctors
+                                .Select(doc => $"{doc.Name} {doc.Surname} ({doc.Experience} years)")
+                                .ToList();
+
+                            int selectedDoctorIndex = MenuHelper.SelectFromMenu(doctorNames, "Choose a Doctor");
+
+                            var selectedDoctor = selectedDepartment.Doctors[selectedDoctorIndex];
+                            System.Console.WriteLine($"You chose Dr. {selectedDoctor.Name} {selectedDoctor.Surname} with {selectedDoctor.Experience} years of experience.");
+
+                            // Saat secimi
+
+                            var timeOptions = selectedDoctor.Reserved
+                                .Select(r => $"{r.Time} {(r.IsReserved ? "(Reserved)" : "(Available)")}")
+                                .ToList();
+
+                            while (true)
+                            {
+                                int selectedTimeIndex = MenuHelper.SelectFromMenu(timeOptions, "Choose a time slot");
+
+                                var chosenHour = selectedDoctor.Reserved[selectedTimeIndex];
+
+                                if (chosenHour.IsReserved)
+                                {
+                                    System.Console.WriteLine("Sorry, this time slot is already reserved. Please choose another time.");
+                                    System.Console.WriteLine("Press any key to try again...");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                chosenHour.IsReserved = true;
+                                chosenHour.ReservedBy = user;
+
+                                user.AddAppointment(selectedDoctor, chosenHour.Time);
+
+                                string doctorsFilePath = "doctors.json";
+                                List<Doctor> doctors = Doctor.LoadDoctorsFromJson(doctorsFilePath);
+                                Doctor.SaveDoctorsToJson(doctorsFilePath, doctors);
+
+                                System.Console.WriteLine($"Thanks {name} {usersurname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
+                                Console.ReadKey();
+                                break;
+                                    
+                                    
+                                }
+                            }
+                        }
+                        else if (selectedIndex == 1)
+                        {
+                            System.Console.WriteLine("Logging out from user page");
+                            System.Console.WriteLine("Press any key to continue...");
+                            Console.ReadKey();
+                            loggedIn = false;
+                        }
                     }
                 }
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("Incorrect password. Please try again.");
-                Console.ResetColor();
-                Console.ReadKey();
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("Incorrect password. Please try again.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                }
             }
         }
-    }
 
-    if (!found)
-    {
-        System.Console.WriteLine("We couldn't find this user in the system.");
-        System.Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        if (!found)
+        {
+            System.Console.WriteLine("We couldn't find this user in the system.");
+            System.Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
-}
 
 
 
@@ -685,6 +702,8 @@ else if (choice == 3)
 
         Console.Write("Enter a short description about yourself: ");
         string description = Console.ReadLine()!;
+
+
 
         Doctor newDoctor = new Doctor(doctorName, doctorSurname, experience, department, description);
         admin.AddDoctorApplication(newDoctor);
