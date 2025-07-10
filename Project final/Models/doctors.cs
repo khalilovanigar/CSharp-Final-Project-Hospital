@@ -31,7 +31,7 @@ public class Doctor
     };
     } 
         
-               public static void SaveDoctorsToJson(string filePath, List<Doctor> doctors)
+        public static void SaveDoctorsToJson(string filePath, List<Doctor> doctors)
         {
             try
             {
@@ -57,5 +57,6 @@ public static List<Doctor> LoadDoctorsFromJson(string filePath)
         }
         return new List<Doctor>();
     }
-    
+
+
     }
