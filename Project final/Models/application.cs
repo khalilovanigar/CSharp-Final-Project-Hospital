@@ -13,6 +13,7 @@ namespace ApplicationNamespace
     {
         public Doctor Doctor { get; set; }
         public ApplicationStatus Status { get; set; }
+        public Application() { }
 
         public Application(Doctor doctor)
         {
