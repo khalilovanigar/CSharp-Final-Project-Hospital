@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+
 using DoctorsNamespace;
 using ApplicationNamespace;
 
@@ -29,11 +32,52 @@ namespace AdminNamespace
 
 
 
-        public void AddDoctorApplication(Doctor doctor)
+public void AddDoctorApplication(Doctor doctor)
+{
+    bool exists = PendingApplications.Any(a => a.Doctor.Name == doctor.Name && a.Doctor.Surname == doctor.Surname);
+    if (!exists)
+    {
+        PendingApplications.Add(new Application { Doctor = doctor, Status = ApplicationStatus.Pending });
+        SaveApplicationsToFile();
+    }
+    else
+    {
+        Console.WriteLine("This doctor has already applied.");
+    }
+}
+
+private const string FilePath = "pending_applications.json";
+
+public void SaveApplicationsToFile()
+{
+    string json = JsonSerializer.Serialize(PendingApplications, new JsonSerializerOptions { WriteIndented = true });
+    File.WriteAllText(FilePath, json);
+}
+
+
+public void LoadApplicationsFromFile()
+{
+    if (File.Exists(FilePath))
+    {
+        string json = File.ReadAllText(FilePath);
+        if (!string.IsNullOrWhiteSpace(json)) 
         {
-            var app = new Application(doctor);
-            PendingApplications.Add(app);
+            var list = JsonSerializer.Deserialize<List<Application>>(json);
+            if (list != null)
+            {
+                PendingApplications = list;
+            }
         }
+        else
+        {
+            PendingApplications = new List<Application>();
+        }
+    }
+    else
+    {
+        PendingApplications = new List<Application>();
+    }
+}
 
         public void AcceptDoctor(string name, string surname)
         {
@@ -41,6 +85,7 @@ namespace AdminNamespace
             if (app != null)
             {
                 app.Status = ApplicationStatus.Accepted;
+                SaveApplicationsToFile();
                 System.Console.WriteLine();
                 System.Console.WriteLine($"Dr.{name} {surname} accepted.");
                 System.Console.WriteLine();
@@ -51,12 +96,14 @@ namespace AdminNamespace
             }
         }
 
+
         public void RejectDoctor(string name, string surname)
         {
             var app = PendingApplications.Find(a => a.Doctor.Name == name && a.Doctor.Surname == surname && a.Status == ApplicationStatus.Pending);
             if (app != null)
             {
                 app.Status = ApplicationStatus.Rejected;
+                SaveApplicationsToFile();
                 System.Console.WriteLine();
                 System.Console.WriteLine($"Dr.{name} {surname} rejected.");
                 System.Console.WriteLine();
