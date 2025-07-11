@@ -24,7 +24,22 @@ public class Reserv
         ReservedBy = null;
     }
     
-
-    
 }
 
+public class ReservationRecord
+{
+    public string DoctorName { get; set; }
+    public string DoctorSurname { get; set; }
+    public string Department { get; set; }
+    public string Time { get; set; }
+    public string ReservedByEmail { get; set; }
+
+    public ReservationRecord(string doctorName, string doctorSurname, string department, string time, string reservedByEmail)
+    {
+        DoctorName = doctorName;
+        DoctorSurname = doctorSurname;
+        Department = department;
+        Time = time;
+        ReservedByEmail = reservedByEmail;
+    }
+}
