@@ -1,0 +1,16 @@
+[
+  {
+    "DoctorName": "Sevda",
+    "DoctorSurname": "Ehmedova",
+    "Department": "Pediatriya",
+    "Time": "09:00-11:00",
+    "ReservedByEmail": "nuraymemmedli@gmail.com"
+  },
+  {
+    "DoctorName": "Aysu",
+    "DoctorSurname": "Memmedova",
+    "Department": "Stomologiya",
+    "Time": "12:00-14:00",
+    "ReservedByEmail": "musaxelilov@gmail.com"
+  }
+]

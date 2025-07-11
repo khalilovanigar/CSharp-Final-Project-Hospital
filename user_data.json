@@ -1,0 +1,54 @@
+[
+  {
+    "Name": "Aysel",
+    "Surname": "Aliyeva",
+    "Email": "ayselaliyeva@gmail.com",
+    "PhoneNumber": "0504331334",
+    "Password": "aysel1234",
+    "LastChoice": 0,
+    "Appointments": []
+  },
+  {
+    "Name": "Nuray",
+    "Surname": "Memmedli",
+    "Email": "nuraymemmedli@gmail.com",
+    "PhoneNumber": "0506743674",
+    "Password": "nuray1234",
+    "LastChoice": 0,
+    "Appointments": [
+      {
+        "Doctor": {
+          "Name": "Sevda",
+          "Surname": "Ehmedova",
+          "Experience": 6,
+          "Description": "",
+          "Reserved": [
+            {
+              "Time": "09:00-11:00",
+              "IsReserved": true
+            },
+            {
+              "Time": "12:00-14:00",
+              "IsReserved": false
+            },
+            {
+              "Time": "15:00-17:00",
+              "IsReserved": false
+            }
+          ],
+          "Department": ""
+        },
+        "Time": "09:00-11:00"
+      }
+    ]
+  },
+  {
+    "Name": "Musa",
+    "Surname": "Xelilov",
+    "Email": "musaxelilov@gmail.com",
+    "PhoneNumber": "0506731234",
+    "Password": "musa1234",
+    "LastChoice": 0,
+    "Appointments": []
+  }
+]

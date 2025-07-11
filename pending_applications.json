@@ -1,0 +1,191 @@
+[
+  {
+    "Doctor": {
+      "Name": "Gulnar",
+      "Surname": "Huseynova",
+      "Experience": 10,
+      "Description": "Pediatrician with 10 years of experience. Focused on children\u0027s health.",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Pediatriya"
+    },
+    "Status": 1
+  },
+  {
+    "Doctor": {
+      "Name": "Muxtar",
+      "Surname": "Kerimov",
+      "Experience": 5,
+      "Description": "Orthopedic specialist with 5 years of experience, skilled in trauma and fracture care.",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Travmotologiya"
+    },
+    "Status": 2
+  },
+  {
+    "Doctor": {
+      "Name": "Lamiye",
+      "Surname": "Aliyeva",
+      "Experience": 3,
+      "Description": "Newly graduated dentist, passionate about dental and oral health.",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Stomologiya"
+    },
+    "Status": 1
+  },
+  {
+    "Doctor": {
+      "Name": "Aylin",
+      "Surname": "Selimova",
+      "Experience": 1,
+      "Description": "New doctor, gaining experience in the field.",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Pediatriya"
+    },
+    "Status": 2
+  },
+  {
+    "Doctor": {
+      "Name": "Ayxan",
+      "Surname": "Zamanov",
+      "Experience": 2,
+      "Description": "2 years of experience, learning new methods in practice.",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Travmotologiya"
+    },
+    "Status": 2
+  },
+  {
+    "Doctor": {
+      "Name": "Nezrin",
+      "Surname": "Xelilova",
+      "Experience": 4,
+      "Description": "I am good at my work",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Pediatriya"
+    },
+    "Status": 1
+  },
+  {
+    "Doctor": {
+      "Name": "Gulare",
+      "Surname": "Aliyeva",
+      "Experience": 2,
+      "Description": "i am new doctor in this area",
+      "Reserved": [
+        {
+          "Time": "09:00-11:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "12:00-14:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        },
+        {
+          "Time": "15:00-17:00",
+          "IsReserved": false,
+          "ReservedBy": null
+        }
+      ],
+      "Department": "Travmatologiya"
+    },
+    "Status": 1
+  }
+]
