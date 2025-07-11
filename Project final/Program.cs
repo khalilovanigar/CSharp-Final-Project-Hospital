@@ -7,7 +7,7 @@ using AdminNamespace;
 using ApplicationNamespace;
 using DoctorManagerNamespace;
 using MenuHelperNamespace;
-using System.IO;
+using System.Text.Json;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -73,6 +73,31 @@ var doctor5 = new Doctor("Ayxan", "Zamanov", 2, "Travmotologiya") { Description 
 // admin.AddDoctorApplication(doctor8);
 // admin.AddDoctorApplication(doctor9);
 // admin.AddDoctorApplication(doctor10);
+
+string reservationFile = "reservations.json";
+if (File.Exists(reservationFile))
+{
+    var reservationJson = File.ReadAllText(reservationFile);
+    var reservations = JsonSerializer.Deserialize<List<ReservationRecord>>(reservationJson)!;
+
+    foreach (var record in reservations)
+    {
+        var department = departments.FirstOrDefault(d => d.DepartmentName == record.Department);
+        if (department != null)
+        {
+            var doctor = department.Doctors.FirstOrDefault(d => d.Name == record.DoctorName && d.Surname == record.DoctorSurname);
+            if (doctor != null)
+            {
+                var reservedSlot = doctor.Reserved.FirstOrDefault(r => r.Time == record.Time);
+                if (reservedSlot != null)
+                {
+                    reservedSlot.IsReserved = true;
+                    reservedSlot.ReservedBy = new User("Hidden", "User", record.ReservedByEmail, "", ""); // optional, just to fill
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -459,14 +484,31 @@ while (true)
                     chosenHour.IsReserved = true;
                     chosenHour.ReservedBy = newUser;
                     newUser.AddAppointment(selectedDoctor, chosenHour.Time);
+                    string reservationFilee = "reservations.json";
+
+                    var newRecord = new ReservationRecord(
+                    selectedDoctor.Name,
+                    selectedDoctor.Surname,
+                    selectedDepartment.DepartmentName,
+                    chosenHour.Time,
+                    newUser.Email);
+
+                    List<ReservationRecord> allReservations = new List<ReservationRecord>();
+                    if (File.Exists(reservationFile))
+                    {
+                    string json = File.ReadAllText(reservationFile);
+                    allReservations = JsonSerializer.Deserialize<List<ReservationRecord>>(json)!;
+                    }
+
+                    allReservations.Add(newRecord);
+
+                    File.WriteAllText(reservationFile, JsonSerializer.Serialize(allReservations, new JsonSerializerOptions { WriteIndented = true }));
+
                     System.Console.WriteLine($"Thanks {name} {surname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
 
-                    string doctorsFilePath = "doctors.json";
-                    List<Doctor> doctors = Doctor.LoadDoctorsFromJson(doctorsFilePath);
-                    Doctor.SaveDoctorsToJson(doctorsFilePath, doctors);
                     Console.ReadKey();
                     break;
-                    
+
                 }
             }
         }
@@ -601,21 +643,37 @@ while (true)
                                 }
                                 else
                                 {
-                                chosenHour.IsReserved = true;
-                                chosenHour.ReservedBy = user;
+                                    chosenHour.IsReserved = true;
+                                    chosenHour.ReservedBy = user;
 
-                                user.AddAppointment(selectedDoctor, chosenHour.Time);
+                                    user.AddAppointment(selectedDoctor, chosenHour.Time);
+                                    string reservationFilee = "reservations.json";
 
-                                string doctorsFilePath = "doctors.json";
-                                List<Doctor> doctors = Doctor.LoadDoctorsFromJson(doctorsFilePath);
-                                Doctor.SaveDoctorsToJson(doctorsFilePath, doctors);
+                                    var newRecord = new ReservationRecord(
+                                    selectedDoctor.Name,
+                                    selectedDoctor.Surname,
+                                    selectedDepartment.DepartmentName,
+                                    chosenHour.Time,
+                                    user.Email);
 
-                                System.Console.WriteLine($"Thanks {name} {usersurname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
-                                Console.ReadKey();
-                                break;
-                                    
-                                    
+                                    List<ReservationRecord> allReservations = new List<ReservationRecord>();
+                                    if (File.Exists(reservationFile))
+                                    {
+                                        string json = File.ReadAllText(reservationFile);
+                                        allReservations = JsonSerializer.Deserialize<List<ReservationRecord>>(json)!;
+                                    }
+
+                                    allReservations.Add(newRecord);
+
+                                    File.WriteAllText(reservationFile, JsonSerializer.Serialize(allReservations, new JsonSerializerOptions { WriteIndented = true }));
+
+                                    System.Console.WriteLine($"Thanks {name} {usersurname}, you have successfully reserved the time {chosenHour.Time} with Dr.{selectedDoctor.Name}.");
+                                    Console.ReadKey();
+                                    break;
+
+
                                 }
+
                             }
                         }
                         else if (selectedIndex == 1)
