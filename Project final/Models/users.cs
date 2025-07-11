@@ -1,7 +1,6 @@
 using System;
 using DoctorsNamespace;
 namespace UsersNamespace;
-using System.IO;
 using System.Text.Json;
 using Newtonsoft.Json;
 
